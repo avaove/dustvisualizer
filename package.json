@@ -5,7 +5,7 @@
   "scripts": {
     "start": "parcel ./index.html --open",
     "build": "parcel build ./index.html",
-    "predeploy": "rm -rf dist && parcel build ./*.html --public-url 'https://ananyapoddar.github.io/dust-visualizer/'",
+    "predeploy": "rm -rf dist && parcel build ./*.html --public-url 'https://avaove.github.io/dustvisualizer/'",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
