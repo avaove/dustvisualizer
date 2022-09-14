@@ -73,16 +73,14 @@ varying vec3 vColor;
 // create a mapper that maps true, logdust to a certain array
 
 let logdust = fs
-  .readFileSync("./js/data/true_logdust.txt", { encoding: "utf-8" })
+  .readFileSync("./true_logdust.txt", { encoding: "utf-8" })
   .split("\n");
 logdust = logdust.map(function (x) {
   return parseFloat(x);
 });
 console.log("LOGDUST LOADED HERE", logdust.length, logdust[0]);
 
-let pred_A = fs
-  .readFileSync("./js/data/pred_A.txt", { encoding: "utf-8" })
-  .split("\n");
+let pred_A = fs.readFileSync("./pred_A.txt", { encoding: "utf-8" }).split("\n");
 pred_A = pred_A.map(function (x) {
   return parseFloat(x);
 });
@@ -100,7 +98,7 @@ console.log(pred_A.length, pred_A[1]);
 // console.log(logdust.length);
 
 let positionsUnformatted = fs
-  .readFileSync("./js/data/xgrid.txt", { encoding: "utf-8" })
+  .readFileSync("./xgrid.txt", { encoding: "utf-8" })
   .split("\n");
 let positions = [];
 positionsUnformatted.forEach(function (item, i) {
