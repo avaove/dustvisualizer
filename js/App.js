@@ -54,7 +54,7 @@ function spherical2cart(r, theta, phi) {
 
 function getLineOfSightImgTitle(r, x, y, z) {
   const ret =
-    "./data/losPlots/" +
+    "./losPlots/" +
     (x / r).toFixed(2) +
     "i_" +
     (y / r).toFixed(2) +
