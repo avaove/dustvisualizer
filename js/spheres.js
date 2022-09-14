@@ -223,7 +223,7 @@ export class Spheres extends Mesh {
       "aColor",
       new InstancedBufferAttribute(new Float32Array(aColor), 3, false)
     );
-    instancedGeometry.maxInstancedCount = 6709;
+    instancedGeometry.maxInstancedCount = 20127;
 
     this.geometry = instancedGeometry;
   }
