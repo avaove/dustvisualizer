@@ -22,4 +22,4 @@ var e;!function(t,n){"object"==typeof exports&&"undefined"!=typeof module?module
 },{"./../styles.css":"Tnu0","three":"gBK8","./ThreeScene":"mk25","./spheres":"f8oX","stats.js":"ZsAW","dat.gui":"ArXC"}],"QvaY":[function(require,module,exports) {
 "use strict";var e=require("./App.js"),n={nInstances:1e3,useCube:!0,scale:1},s=document.getElementById("app"),t=new e.App(s,n);t.init();
 },{"./App.js":"aeIX"}]},{},["QvaY"], null)
-//# sourceMappingURL=https://avaove.github.io/dustvisualizer/js.32f68f4f.js.map
+//# sourceMappingURL=https://avaove.github.io/dustvisualizer/js.d6ab25ca.js.map
