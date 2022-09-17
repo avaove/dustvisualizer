@@ -1,5 +1,15 @@
 import "./../styles.css";
-import { WebGLRenderer, PerspectiveCamera, Scene, Clock } from "three";
+import {
+  WebGLRenderer,
+  PerspectiveCamera,
+  Scene,
+  Clock,
+  MeshBasicMaterial,
+  Mesh,
+  Color,
+  TextGeometry,
+  FontLoader,
+} from "three";
 
 let mouseX = 0,
   mouseY = 0;
@@ -74,6 +84,32 @@ export class BasicThreeDemo {
       camera.position.fromArray(view.eye);
       camera.up.fromArray(view.up);
       view.camera = camera;
+
+      // NEW TEXT >>>
+      var loader = new FontLoader();
+
+      loader.load("../fonts/helvetiker_bold.typeface.json", function (font) {
+        var textGeo = new TextGeometry("Y", {
+          size: 5,
+          height: 2,
+          curveSegments: 6,
+          font: font,
+          style: "normal",
+        });
+
+        var color = new Color();
+        color.setRGB(255, 250, 250);
+        var textMaterial = new MeshBasicMaterial({ color: color });
+        var text = new Mesh(textGeo, textMaterial);
+
+        text.position.x = this.axesHelper.geometry.vertices[1].x;
+        text.position.y = this.axesHelper.geometry.vertices[1].y;
+        text.position.z = this.axesHelper.geometry.vertices[1].z;
+        text.rotation = view.camera.rotation;
+        this.scene.add(text);
+      });
+
+      // NEW TEXT <<<
     }
     this.scene = new Scene();
 

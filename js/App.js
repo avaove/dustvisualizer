@@ -4,7 +4,6 @@ import {
   Vector3,
   BufferGeometry,
   Line,
-  ConeGeometry,
   Mesh,
   MeshBasicMaterial,
   AxesHelper,
@@ -15,23 +14,6 @@ import { Spheres } from "./spheres";
 // import { LineOfSight } from "./LineOfSight";
 import Stats from "stats.js";
 import { GUI } from "dat.gui";
-
-// TODO NEXT
-// json object of x,y,z and their reddenings/residual for each plot seperatel - can easily get r
-// load the all the jsons only once when app loaded and create a 3D object for everything
-// restart the app if the r in dat.gui is updated display them if they are within the range r
-// do this for a single map for now
-
-// TODO NEXT
-// sort the x,y,z positions so they range from smallest r to biggest r
-// sort the reddening/sigma/residual values the same order
-// normalize r range between 0 and 1 - remmeber to take into account the fact that they are cubes not spheres
-// display only portion of the array like half if r is 0.5
-
-// TODO NEXT store the results as consts here
-// TODO NEXT laod the arrays in the App constro
-
-// TODO
 
 const coneAng = 0.349066;
 
@@ -66,6 +48,18 @@ function getLineOfSightImgTitle(r, x, y, z) {
   return ret; ///0.87i_0.00j_0.50k.849a139b.pn
 }
 
+function getPlotTitle(r, x, y, z) {
+  const ret =
+    (x / r).toFixed(2) +
+    "i  " +
+    (y / r).toFixed(2) +
+    "j  " +
+    (z / r).toFixed(2) +
+    "k";
+  //   console.log(ret);
+  return ret; ///0.87i_0.00j_0.50k.849a139b.pn
+}
+
 export class App extends BasicThreeDemo {
   constructor(container, config) {
     super(container);
@@ -89,19 +83,21 @@ export class App extends BasicThreeDemo {
     this.points.push(new Vector3(100, 0, 0)); // initially add LOS over the x axis
     this.losGeometry = new BufferGeometry().setFromPoints(this.points);
     this.losLine = new Line(this.losGeometry, this.losMaterial);
-    this.h = this.points[0].distanceTo(this.points[1]);
-    this.g = new ConeGeometry(2, this.h);
-    this.g.translate(0, this.h * 0.5, 0); // base to 0
-    this.g.rotateX(Math.PI * 0.5); // align along Z-axis
-    this.m = new MeshBasicMaterial({ opacity: 0.5 }); // or any other material
-    this.o = new Mesh(this.g, this.m);
-    this.o.position.copy(this.points[0]);
-    this.o.lookAt(this.points[1]);
+    // NEW cone geometry
+    // this.h = this.points[0].distanceTo(this.points[1]);
+    // this.g = new ConeGeometry(2, this.h);
+    // this.g.translate(0, this.h * 0.5, 0); // base to 0
+    // this.g.rotateX(Math.PI * 0.5); // align along Z-axis
+    // this.m = new MeshBasicMaterial({ opacity: 0.5 }); // or any other material
+    // this.o = new Mesh(this.g, this.m);
+    // this.o.position.copy(this.points[0]);
+    // this.o.lookAt(this.points[1]);
+    // NEW cone geometry
     // NEW LOS
     this.scene.background = new Color("black");
 
     this.restart = this.restart.bind(this);
-    this.axesHelper = new AxesHelper(5);
+    this.axesHelper = new AxesHelper(7);
 
     // setting up dat.gui
     this.stats = new Stats();
@@ -144,11 +140,8 @@ export class App extends BasicThreeDemo {
   restart() {
     this.topSpheres.clean();
     this.bottomSpheres.clean();
-    // this.leftSpheres.clean();
-    // this.losGeometry.dispose();
     this.scene.remove(this.losLine);
     this.scene.remove(this.o);
-    // this.los.clean();
     this.topSpheres.init(options);
     this.bottomSpheres.init(options);
     this.leftSpheres.init(options);
@@ -161,13 +154,17 @@ export class App extends BasicThreeDemo {
       document.getElementById("los").src,
       getLineOfSightImgTitle(10, cartPos[0], cartPos[1], cartPos[2])
     );
-    document.getElementById("los").src = getLineOfSightImgTitle(
+
+    const losPlotTitle = getLineOfSightImgTitle(
       10,
       cartPos[0],
       cartPos[1],
       cartPos[2]
     );
-    document.getElementById("los").alt = getLineOfSightImgTitle(
+    document.getElementById("los").src = losPlotTitle;
+    document.getElementById("los").alt = losPlotTitle;
+    document.getElementById("title").innerHTML = options.colorMaps;
+    document.getElementById("subtitle").innerHTML = getPlotTitle(
       10,
       cartPos[0],
       cartPos[1],
@@ -178,20 +175,22 @@ export class App extends BasicThreeDemo {
     this.losGeometry = new BufferGeometry().setFromPoints(this.points);
     this.losLine = new Line(this.losGeometry, this.losMaterial);
     this.scene.add(this.losLine);
-    this.h = this.points[0].distanceTo(this.points[1]) - 3;
-    this.g = new ConeGeometry(1, this.h, 10, 10, true);
-    this.g.translate(0, -this.h * 0.5, 0); // base to 0
-    this.g.rotateX(-Math.PI * 0.5); // align along Z-axis
-    this.m = new MeshBasicMaterial({
-      color: 0x00ff00,
-      opacity: 0.6,
-      transparent: true,
-    }); // or any other material
-    this.o = new Mesh(this.g, this.m);
-    // TODO: figure out how to add outlines to the cone
-    this.o.position.copy(this.points[0]);
-    this.o.lookAt(this.points[1]);
-    this.scene.add(this.o);
+    // NEW cone geometry >>>
+    // this.h = this.points[0].distanceTo(this.points[1]) - 3;
+    // this.g = new ConeGeometry(1, this.h, 10, 10, true);
+    // this.g.translate(0, -this.h * 0.5, 0); // base to 0
+    // this.g.rotateX(-Math.PI * 0.5); // align along Z-axis
+    // this.m = new MeshBasicMaterial({
+    //   color: 0x00ff00,
+    //   opacity: 0.6,
+    //   transparent: true,
+    // }); // or any other material
+    // this.o = new Mesh(this.g, this.m);
+    // // TODO: figure out how to add outlines to the cone
+    // this.o.position.copy(this.points[0]);
+    // this.o.lookAt(this.points[1]);
+    // this.scene.add(this.o);
+    // NEW cone geometry <<<
     // NEW LOS
   }
   dispose() {
